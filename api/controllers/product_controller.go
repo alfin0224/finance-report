@@ -8,6 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetProducts(c *gin.Context) {
+	db, err := config.SetupDatabase()
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to connect to database"})
+		return
+	}
+
+	var products []models.Product
+	result := db.Find(&products)
+	if result.Error != nil {
+		c.JSON(500, gin.H{"error": "Failed to retrieve products"})
+		return
+	}
+
+	c.JSON(200, products)
+}
+
 func CreateProduct(c *gin.Context) {
 	db, err := config.SetupDatabase()
 	if err != nil {
@@ -29,5 +46,3 @@ func CreateProduct(c *gin.Context) {
 
 	c.JSON(201, product)
 }
-
-// Implement similar functions for reading, updating, and deleting products.
