@@ -1,13 +1,14 @@
 package main
 
 import (
+	"finance-report/api/routes"
+
 	"github.com/gin-gonic/gin"
-	"github.com/alfin0224/go-crud-api/routes"
 )
 
 func main() {
-	db, _ := ConnectDB()
-	r := routes.SetupRouter(db)
+	router := gin.Default()
+	routes.SetupRoutes(router)
 
-	r.Run(":8080")
+	router.Run(":8080") // Change the port as needed
 }
